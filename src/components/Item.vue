@@ -2,8 +2,8 @@
   <render
     v-if="computedItem.render"
     :render="computedItem.render"
-    v-on="$listeners"
     v-bind="computedItem.props"
+    v-on="$listeners"
     :value.sync="value"
   ></render>
   <component
@@ -16,11 +16,12 @@
 </template>
 
 <script>
+import optionConfig from "@/components/optionConfig";
 import render from "./render";
-import ElementMapping from "@/type";
+import ElementMapping from "@/elementMapping";
 
 export default {
-  components: { render },
+  components: { render, optionConfig },
   props: {
     item: {
       required: true,
@@ -38,7 +39,7 @@ export default {
       // 优先渲染 render
       if (def.render) {
         item.render = def.render;
-      } else {
+      } else if (def.tag) {
         item.tag = def.tag;
       }
       item.props = Object.assign({}, def.props, item.props);

@@ -17,9 +17,8 @@ export default [{
     {
         label: '尺寸',
         key: 'size',
-        type: 'el-radio-button',
+        type: 'el-select',
         props: {
-            size: 'mini',
             options: [{
                     label: '中等',
                     value: 'medium'

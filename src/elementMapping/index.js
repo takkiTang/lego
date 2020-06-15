@@ -3,27 +3,30 @@
 export default {
     'el-button': {
         props: {
-            label: '按钮'
+            label: '按钮',
+            size: "medium"
         },
         render: (h, { label ,...props}) => {
             return (
-                <el-button  { ...{props: props} }>{label}</el-button>
+                <el-button  { ...{props} }>{label}</el-button>
             )
         }
     },
     'el-input':{
         tag: 'el-input',
-        props: {
-
-        }
     },
     'el-select': {
         props: {
-            options: []
+            options: [
+                {
+                    label:'选项1',
+                    value:'值1'
+                }
+            ]
         },
-        render: (h, { options , value ,... props }, listeners) => {
+        render: (h, { options ,... props }, listeners) => {
             return (
-                <el-select  {...{props:props}}  value={value} onInput={ val => { listeners.input(val) }}>
+                <el-select  { ...{props} } { ...{on:listeners} }>
                     {options.map(option => {
                         return (
                             <el-option { ...{props: option} } ></el-option>
@@ -37,9 +40,9 @@ export default {
         props: {
             options: []
         },
-        render: (h, { options , value, ... props },listeners) => {
+        render: (h, { options , ... props }, listeners) => {
             return (
-                <el-radio-group { ...{props:props} } value={value} onInput={ val => { listeners.input(val) }}>
+                <el-radio-group { ...{props} } { ...{on:listeners} }>
                 {options.map(option => {
                     return (
                     <el-radio-button label={option.value}>{option.label}</el-radio-button>
@@ -51,11 +54,11 @@ export default {
     },
     'el-switch':{
         tag: 'el-switch',
-        props: {
-
-        }
     },
     'el-input-number':{
         tag:'el-input-number'
+    },
+    'optionConfig':{
+        tag:'optionConfig'
     }
 }

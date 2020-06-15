@@ -1,13 +1,14 @@
 <template>
   <div id="app">
     <el-container style="height:100vh;">
-      <el-aside style="background-color: rgb(238, 241, 246)">
+      <el-aside style="background-color: rgb(238, 241, 246)" width="300px">
         <components-list />
       </el-aside>
       <el-container class="preview">
         <el-header class="btn-bar">
-          <el-button type="text" size="large" icon="el-icon-view">预览</el-button>
-          <el-button type="text" size="large" icon="el-icon-document">生成代码</el-button>
+          <!-- <el-button type="text" size="large" icon="el-icon-view">预览</el-button> -->
+          <!-- <el-button type="text" size="large" icon="el-icon-document">生成JSON</el-button> -->
+          <el-button type="text" size="large" icon="el-icon-document" @click="visible = true">生成代码</el-button>
         </el-header>
         <el-main>
           <draggable
@@ -16,30 +17,51 @@
             group="component"
             @add="handelAdd"
             class="edit-main"
+            handle=".handle"
           >
-            <div class="list-item" v-for="item in list" :key="item.id" @click="handelClick(item)">
-              <div class="modal" :class="{'active':actived.id === item.id}">
-                <Item :item="item"></Item>
+            <div
+              v-for="(item,index) in list"
+              :key="item.id"
+              @click="handelClick(item)"
+              class="list-item"
+              :class="{'active':actived.id === item.id}"
+            >
+              <div class="box">
+                <div class="handle">
+                  <i class="el-icon-rank"></i>
+                </div>
+                <div class="modal">
+                  <Item :item="item"></Item>
+                </div>
+                <div class="action">
+                  <i class="el-icon-delete" @click.stop="handelRemove(index)"></i>
+                </div>
               </div>
             </div>
             <div v-if="!list.length" class="empty">从左侧拖拽来添加组件</div>
           </draggable>
         </el-main>
       </el-container>
-      <el-aside style="background-color: rgb(238, 241, 246)">
-        <el-header>字段属性</el-header>
-        <el-form>
-          <el-form-item
-            v-for="item in model"
-            :key="item.label"
-            :label="item.label"
-            label-width="80px"
-          >
-            <Item :item="item" v-model="list[activeIndex].props[item.key]"></Item>
-          </el-form-item>
-        </el-form>
+      <el-aside style="background-color: rgb(238, 241, 246)" class="props" width="350px">
+        <el-main v-if="Object.keys(actived).length">
+          <el-form label-position="top">
+            <nav>字段属性</nav>
+            <el-form-item
+              v-for="item in model"
+              :key="item.label"
+              :label="item.label"
+              label-width="80px"
+            >
+              <Item :item="item" v-model="list[activeIndex].props[item.key]"></Item>
+            </el-form-item>
+          </el-form>
+        </el-main>
+        <div v-else class="empty">从左侧拖拽来添加组件</div>
       </el-aside>
     </el-container>
+    <el-dialog title="生成代码" :visible.sync="visible">
+      <Parse :list="list"></Parse>
+    </el-dialog>
   </div>
 </template>
 
@@ -47,22 +69,23 @@
 import { v4 as uuid } from "uuid";
 import componentsList from "./views/componentsList";
 import Item from "@/components/Item";
-import defaultData from "./constant/default";
+import Parse from "@/components/Parse";
+import models from "@/elementModels";
 import draggable from "vuedraggable";
-import models from "@/models";
 
 export default {
   name: "app",
-  components: { componentsList, draggable, Item },
+  components: { componentsList, draggable, Item, Parse },
   data() {
     return {
       list: [],
-      actived: {}
+      actived: {},
+      visible: false
     };
   },
   computed: {
     model() {
-      return this.actived ? models[this.actived.type] : [];
+      return Object.keys(this.actived).length ? models[this.actived.type] : [];
     },
     activeIndex() {
       return this.list.findIndex(v => v.id == this.actived.id);
@@ -70,23 +93,34 @@ export default {
   },
   methods: {
     handelAdd(evt) {
-      this.$nextTick(() => {
-        const newIndex = evt.newIndex;
-        const type = this.list[newIndex].type;
-        const props = defaultData[type] || {};
-        const id = uuid();
-        const key = `${type}_${id}`;
-        this.$set(this.list, newIndex, {
-          type,
-          id,
-          key,
-          props
-        });
-        this.actived = this.list[newIndex];
+      const newIndex = evt.newIndex;
+      const { type, props } = this.list[newIndex];
+      const id = uuid();
+      const key = `${type}_${id}`;
+      this.$set(this.list, newIndex, {
+        type,
+        id,
+        key,
+        props
       });
+      this.actived = this._.cloneDeep(this.list[newIndex]);
     },
     handelClick(data) {
       this.actived = data;
+    },
+    handelRemove(index) {
+      if (this.list.length === index + 1) {
+        if (index === 0) {
+          this.actived = {};
+        } else {
+          this.actived = this._.cloneDeep(this.list[index - 1]);
+        }
+      } else {
+        this.actived = this._.cloneDeep(this.list[index + 1]);
+      }
+      this.$nextTick(() => {
+        this.list.splice(index, 1);
+      });
     }
   },
   watch: {}
@@ -113,13 +147,57 @@ export default {
     position: relative;
     .list-item {
       position: relative;
-      .modal {
-        pointer-events: none;
-        outline: 2px solid transparent;
+      .box {
+        width: 100%;
+        height: 100%;
         border: 1px solid transparent;
-        &.active {
+        &:hover {
+          border-color: #1989fa;
+        }
+        .handle {
+          display: none;
+        }
+        .action {
+          display: none;
+        }
+        .modal {
+          pointer-events: none;
+        }
+      }
+      &.active {
+        .box {
           outline: 2px solid #1989fa;
-          border: 1px solid #1989fa;
+          border-color: #1989fa;
+          font-size: 14px;
+          .handle {
+            display: inline-block;
+            position: absolute;
+            left: -2px;
+            top: -2px;
+            bottom: -18px;
+            height: 24px;
+            line-height: 24px;
+            background: #1989fa;
+            color: #fff;
+            width: 20px;
+            text-align: center;
+            z-index: 8;
+            cursor: move;
+          }
+          .action {
+            display: inline-block;
+            position: absolute;
+            right: -2px;
+            bottom: -2px;
+            width: 20px;
+            height: 24px;
+            line-height: 24px;
+            background: #1989fa;
+            color: #fff;
+            text-align: center;
+            z-index: 8;
+            cursor: pointer;
+          }
         }
       }
     }
@@ -145,5 +223,18 @@ export default {
       color: rgb(211, 208, 208);
     }
   }
+}
+.props {
+  position: relative;
+}
+.empty {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  color: rgb(211, 208, 208);
 }
 </style>

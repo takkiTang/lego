@@ -2,24 +2,27 @@ export default [{
         label: '字段标示',
         key: 'key',
         type: 'el-input',
-        props: {
-            placeholder: '请输入字段标示'
-        }
+        placeholder: '请输入字段标示'
     },
     {
         label: '占位内容',
         key: 'placeholder',
         type: 'el-input',
-        props: {
-            placeholder: '请输入占位内容'
+        placeholder: '请输入占位内容'
+    },
+    {
+        label: '长度限制',
+        key: 'maxlength',
+        type: 'el-input',
+        props:{
+            type:'number'
         }
     },
     {
         label: '尺寸',
         key: 'size',
-        type: 'el-radio-button',
+        type: 'el-select',
         props: {
-            size: 'mini',
             options: [{
                     label: '中等',
                     value: 'medium'
@@ -36,8 +39,8 @@ export default [{
         }
     },
     {
-        label: '多选',
-        key: 'multiple',
+        label: '字数统计',
+        key: 'show-word-limit',
         type: 'el-switch',
     },
     {
@@ -51,9 +54,14 @@ export default [{
         type: 'el-switch',
     },
     {
-        label: '可搜索',
-        key: 'filterable',
+        label: '密码框',
+        key: 'show-password',
         type: 'el-switch',
     },
-
+    {
+        label: '文本域',
+        key: 'type',
+        type: 'el-switch',
+        activeValue: "textarea"
+    }
 ]
