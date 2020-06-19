@@ -1,21 +1,28 @@
 <template>
   <el-container direction="vertical" class="com-list">
     <el-main>
-      <nav>基础组件</nav>
-      <el-row :gutter="20">
-        <draggable
-          :list="list"
-          :group="{ name: 'component', pull: 'clone', put: false }"
-          :sort="false"
-        >
-          <el-col v-for="(item,i) in list" :key="i" :span="12">
-            <div class="item" @click="handelClick">
-              <i v-if="item.icon" :class="item.icon" class="iconfont" style="margin-right:5px"></i>
-              <span>{{item.name}}</span>
-            </div>
-          </el-col>
-        </draggable>
-      </el-row>
+      <template v-for="item in componentsList">
+        <nav>{{item.title}}</nav>
+        <el-row :gutter="20">
+          <draggable
+            :list="item.list"
+            :group="{ name: 'component', pull: 'clone', put: false }"
+            :sort="false"
+          >
+            <el-col v-for="(subItem,i) in item.list" :key="i" :span="12">
+              <div class="item">
+                <i
+                  v-if="subItem.icon"
+                  :class="subItem.icon"
+                  class="iconfont"
+                  style="margin-right:5px"
+                ></i>
+                <span>{{subItem.name}}</span>
+              </div>
+            </el-col>
+          </draggable>
+        </el-row>
+      </template>
     </el-main>
   </el-container>
 </template>
@@ -27,27 +34,112 @@ export default {
   components: { draggable },
   data() {
     return {
-      list: [
+      componentsList: [
         {
-          name: "按钮",
-          icon: "icon-btn",
-          type: "el-button"
+          title: "布局",
+          list: [
+            {
+              name: "row",
+              type: "el-row"
+            },
+            {
+              name: "col",
+              type: "el-col"
+            }
+          ]
         },
         {
-          name: "选择器",
-          icon: "icon-btn",
-          type: "el-select"
-        },
-        {
-          name: "输入框",
-          icon: "icon-btn",
-          type: "el-input"
+          title: "基础组件",
+          list: [
+            {
+              name: "按钮",
+              type: "el-button",
+              props: {
+                label: "按钮",
+                type: "primary"
+              }
+            },
+            {
+              name: "选择器",
+              type: "el-select",
+              props: {
+                options: [
+                  {
+                    label: "选项1",
+                    value: "值1"
+                  }
+                ]
+              }
+            },
+            {
+              name: "输入框",
+              type: "el-input",
+              props: {
+                placeholder: "请输入"
+              }
+            },
+            {
+              name: "单选框组",
+              type: "el-radio-group",
+              props: {
+                options: [
+                  {
+                    label: "选项1",
+                    value: "值1"
+                  },
+                  {
+                    label: "选项2",
+                    value: "值2"
+                  }
+                ]
+              }
+            },
+            {
+              name: "多选框组",
+              type: "el-checkbox-group",
+              value: [],
+              props: {
+                options: [
+                  {
+                    label: "选项1",
+                    value: "值1"
+                  },
+                  {
+                    label: "选项2",
+                    value: "值2"
+                  }
+                ]
+              }
+            },
+            {
+              name: "日期选择器",
+              type: "el-date-picker",
+              props: {
+                placeholder: "请选择日期"
+              }
+            },
+            {
+              name: "表格",
+              type: "el-table",
+              props: {
+                options: [
+                  {
+                    label: "选项1",
+                    prop: "值1"
+                  },
+                  {
+                    label: "选项2",
+                    prop: "值2"
+                  }
+                ]
+              }
+            }
+          ]
         }
       ]
     };
   },
   methods: {
-    handelClick() {}
   }
 };
 </script>

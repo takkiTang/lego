@@ -1,7 +1,7 @@
 <template>
-  <section>
+  <el-row>
     <draggable :list="options" ghost-class="ghost" @update="handleChange">
-      <el-row v-for="(item,index) in options" :key="item.id" :gutter="4">
+      <el-row v-for="(item,index) in options" :key="item.id" :gutter="4" type="flex">
         <el-col :span="2">
           <i class="el-icon-s-operation drag" size="mini"></i>
         </el-col>
@@ -24,7 +24,7 @@
       </el-row>
     </draggable>
     <el-button type="text" @click="handelAdd">添加选项</el-button>
-  </section>
+  </el-row>
 </template>
 
 <script>
@@ -55,8 +55,8 @@ export default {
     handelAdd() {
       const len = this.options.length + 1;
       this.options.push({
-        label: `选项${len}`,
-        value: `值${len}`
+        [this.props.label]: `选项${len}`,
+        [this.props.value]: `值${len}`
       });
       this.handleChange();
     },

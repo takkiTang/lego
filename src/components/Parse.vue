@@ -1,6 +1,6 @@
 <template>
   <section>
-    <prism :code="code"></prism>
+    <prism :code="generateCode"></prism>
     <el-row type="flex" justify="center">
       <el-col :span="3">
         <el-button type="primary" @click="handleCopy">复制代码</el-button>
@@ -16,18 +16,27 @@ import "prismjs/themes/prism.css";
 import codes from "./code";
 export default {
   props: ["list"],
-  data() {
-    return {};
-  },
   components: { Prism },
-  created() {},
   computed: {
-    code() {
-      return this.list
-        .map(item => {
-          return codes[item.type](item.props);
-        })
+    generateCode() {
+      const tempalte = this.list
+        .map(v => codes[v.type](v.props))
         .join("\n");
+      const data = this.list
+        .map(v => (v.props.key ? `'${v.props.key}':undefined` : "")).filter(v=>v)
+        .join("\n");
+      const code = `<template>
+  <section>
+    ${tempalte}
+  </section>
+</tempalte>
+<script>
+  data() {
+    ${data}
+  }
+<\/script>
+`;
+      return code;
     }
   },
   methods: {

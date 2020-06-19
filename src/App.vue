@@ -7,8 +7,18 @@
       <el-container class="preview">
         <el-header class="btn-bar">
           <!-- <el-button type="text" size="large" icon="el-icon-view">预览</el-button> -->
-          <!-- <el-button type="text" size="large" icon="el-icon-document">生成JSON</el-button> -->
-          <el-button type="text" size="large" icon="el-icon-document" @click="visible = true">生成代码</el-button>
+          <el-button
+            type="text"
+            size="large"
+            icon="el-icon-document"
+            @click="josnVisible = true"
+          >生成JSON</el-button>
+          <el-button
+            type="text"
+            size="large"
+            icon="el-icon-document"
+            @click="codeVisible = true"
+          >生成代码</el-button>
         </el-header>
         <el-main>
           <draggable
@@ -31,10 +41,10 @@
                   <i class="el-icon-rank"></i>
                 </div>
                 <div class="modal">
-                  <Item :item="item"></Item>
+                  <Item :item="item" :value="item.value"></Item>
                 </div>
-                <div class="action">
-                  <i class="el-icon-delete" @click.stop="handelRemove(index)"></i>
+                <div class="action" @click.stop="handelRemove(index)">
+                  <i class="el-icon-delete"></i>
                 </div>
               </div>
             </div>
@@ -44,23 +54,26 @@
       </el-container>
       <el-aside style="background-color: rgb(238, 241, 246)" class="props" width="350px">
         <el-main v-if="Object.keys(actived).length">
-          <el-form label-position="top">
+          <el-form>
             <nav>字段属性</nav>
             <el-form-item
-              v-for="item in model"
-              :key="item.label"
-              :label="item.label"
-              label-width="80px"
+              v-for="model in computedModels"
+              :key="model.label"
+              :label="model.label"
+              label-width="100px"
             >
-              <Item :item="item" v-model="list[activeIndex].props[item.key]"></Item>
+              <Item :item="model" v-model="list[activeIndex].props[model.key]"></Item>
             </el-form-item>
           </el-form>
         </el-main>
         <div v-else class="empty">从左侧拖拽来添加组件</div>
       </el-aside>
     </el-container>
-    <el-dialog title="生成代码" :visible.sync="visible">
+    <el-dialog title="生成代码" :visible.sync="codeVisible">
       <Parse :list="list"></Parse>
+    </el-dialog>
+    <el-dialog title="生成JSON" :visible.sync="josnVisible">
+      1111
     </el-dialog>
   </div>
 </template>
@@ -80,11 +93,12 @@ export default {
     return {
       list: [],
       actived: {},
-      visible: false
+      codeVisible: false,
+      josnVisible: false
     };
   },
   computed: {
-    model() {
+    computedModels() {
       return Object.keys(this.actived).length ? models[this.actived.type] : [];
     },
     activeIndex() {
@@ -92,16 +106,13 @@ export default {
     }
   },
   methods: {
-    handelAdd(evt) {
-      const newIndex = evt.newIndex;
-      const { type, props } = this.list[newIndex];
+    handelAdd({ newIndex }) {
       const id = uuid();
-      const key = `${type}_${id}`;
+      const { props = {}, ...item } = this._.cloneDeep(this.list[newIndex]);
       this.$set(this.list, newIndex, {
-        type,
-        id,
-        key,
-        props
+        props,
+        ...item,
+        id
       });
       this.actived = this._.cloneDeep(this.list[newIndex]);
     },
@@ -151,6 +162,7 @@ export default {
         width: 100%;
         height: 100%;
         border: 1px solid transparent;
+        min-height: 30px;
         &:hover {
           border-color: #1989fa;
         }
@@ -211,6 +223,8 @@ export default {
       content: "";
       overflow: hidden;
       padding: 0;
+      position: relative;
+      z-index: 10;
     }
     .empty {
       width: 100%;

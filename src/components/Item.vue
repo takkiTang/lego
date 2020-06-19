@@ -3,15 +3,15 @@
     v-if="computedItem.render"
     :render="computedItem.render"
     v-bind="computedItem.props"
+    :value="value"
     v-on="$listeners"
-    :value.sync="value"
   ></render>
   <component
     v-else
     :is="computedItem.tag"
     v-bind="computedItem.props"
     v-on="$listeners"
-    :value.sync="value"
+    :value="value"
   ></component>
 </template>
 
@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     computedItem() {
-      const item = this.item;
+      const item = this._.cloneDeep(this.item);
       // 表单控件的类型
       let type = item.type || "el-button";
       // 对应到组件映射表
