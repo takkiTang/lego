@@ -94,4 +94,17 @@ export default {
     'optionConfig': {
         tag: 'optionConfig'
     },
+    'fence': {
+        render: (h, { options, ...props }, listeners,children) => {
+            return (
+                <el-row  {...{ props }}>
+                    {options.map(option => {
+                        return (
+                        <el-col class="widget-fence-item"  {...{ props:option }}>{children}</el-col>
+                        )
+                    })}
+                </el-row>
+            )
+        }
+    }
 }

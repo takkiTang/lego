@@ -19,41 +19,20 @@
             icon="el-icon-document"
             @click="codeVisible = true"
           >生成代码</el-button>
+          <!-- <el-button
+            type="text"
+            class="danger"
+            size="large"
+            icon="el-icon-delete"
+          >清空</el-button>-->
         </el-header>
-        <el-main>
-          <draggable
-            :list="list"
-            ghost-class="ghost"
-            group="component"
-            @add="handelAdd"
-            class="edit-main"
-            handle=".handle"
-          >
-            <div
-              v-for="(item,index) in list"
-              :key="item.id"
-              @click="handelClick(item)"
-              class="list-item"
-              :class="{'active':actived.id === item.id}"
-            >
-              <div class="box">
-                <div class="handle">
-                  <i class="el-icon-rank"></i>
-                </div>
-                <div class="modal">
-                  <Item :item="item" :value="item.value"></Item>
-                </div>
-                <div class="action" @click.stop="handelRemove(index)">
-                  <i class="el-icon-delete"></i>
-                </div>
-              </div>
-            </div>
-            <div v-if="!list.length" class="empty">从左侧拖拽来添加组件</div>
-          </draggable>
+        <el-main class="widget-container">
+          <componentItem v-model="list" :actived="actived" @active="handleActive" :canNested="true"></componentItem>
+          <div v-if="!list.length" class="empty">从左侧拖拽来添加组件</div>
         </el-main>
       </el-container>
       <el-aside style="background-color: rgb(238, 241, 246)" class="props" width="350px">
-        <el-main v-if="Object.keys(actived).length">
+        <!-- <el-main v-if="Object.keys(actived).length">
           <el-form>
             <nav>字段属性</nav>
             <el-form-item
@@ -66,29 +45,29 @@
             </el-form-item>
           </el-form>
         </el-main>
-        <div v-else class="empty">从左侧拖拽来添加组件</div>
+        <div v-else class="empty">从左侧拖拽来添加组件</div>-->
       </el-aside>
     </el-container>
-    <el-dialog title="生成代码" :visible.sync="codeVisible">
+    <!-- <el-dialog title="生成代码" :visible.sync="codeVisible">
       <Parse :list="list"></Parse>
     </el-dialog>
-    <el-dialog title="生成JSON" :visible.sync="josnVisible">
-      1111
-    </el-dialog>
+    <el-dialog title="生成JSON" :visible.sync="josnVisible"></el-dialog>-->
   </div>
 </template>
 
 <script>
 import { v4 as uuid } from "uuid";
 import componentsList from "./views/componentsList";
+import componentItem from "@/views/componentItem";
 import Item from "@/components/Item";
 import Parse from "@/components/Parse";
 import models from "@/elementModels";
 import draggable from "vuedraggable";
+import test from "@/components/test";
 
 export default {
   name: "app",
-  components: { componentsList, draggable, Item, Parse },
+  components: { componentsList, componentItem, draggable, Item, Parse, test },
   data() {
     return {
       list: [],
@@ -106,32 +85,11 @@ export default {
     }
   },
   methods: {
-    handelAdd({ newIndex }) {
-      const id = uuid();
-      const { props = {}, ...item } = this._.cloneDeep(this.list[newIndex]);
-      this.$set(this.list, newIndex, {
-        props,
-        ...item,
-        id
-      });
-      this.actived = this._.cloneDeep(this.list[newIndex]);
+    test(v){
+      console.log(this._.cloneDeep(v))
     },
-    handelClick(data) {
+    handleActive(data) {
       this.actived = data;
-    },
-    handelRemove(index) {
-      if (this.list.length === index + 1) {
-        if (index === 0) {
-          this.actived = {};
-        } else {
-          this.actived = this._.cloneDeep(this.list[index - 1]);
-        }
-      } else {
-        this.actived = this._.cloneDeep(this.list[index + 1]);
-      }
-      this.$nextTick(() => {
-        this.list.splice(index, 1);
-      });
     }
   },
   watch: {}
@@ -152,102 +110,19 @@ export default {
     border-bottom: 2px solid #e4e7ed;
     text-align: right;
   }
-  .edit-main {
-    border: 1px dashed #ccc;
-    min-height: 100%;
-    position: relative;
-    .list-item {
-      position: relative;
-      .box {
-        width: 100%;
-        height: 100%;
-        border: 1px solid transparent;
-        min-height: 30px;
-        &:hover {
-          border-color: #1989fa;
-        }
-        .handle {
-          display: none;
-        }
-        .action {
-          display: none;
-        }
-        .modal {
-          pointer-events: none;
-        }
-      }
-      &.active {
-        .box {
-          outline: 2px solid #1989fa;
-          border-color: #1989fa;
-          font-size: 14px;
-          .handle {
-            display: inline-block;
-            position: absolute;
-            left: -2px;
-            top: -2px;
-            bottom: -18px;
-            height: 24px;
-            line-height: 24px;
-            background: #1989fa;
-            color: #fff;
-            width: 20px;
-            text-align: center;
-            z-index: 8;
-            cursor: move;
-          }
-          .action {
-            display: inline-block;
-            position: absolute;
-            right: -2px;
-            bottom: -2px;
-            width: 20px;
-            height: 24px;
-            line-height: 24px;
-            background: #1989fa;
-            color: #fff;
-            text-align: center;
-            z-index: 8;
-            cursor: pointer;
-          }
-        }
-      }
-    }
-    .ghost {
-      width: 100%;
-      background: #f56c6c;
-      border: 2px solid #f56c6c;
-      outline-width: 0;
-      height: 4px;
-      font-size: 0;
-      content: "";
-      overflow: hidden;
-      padding: 0;
-      position: relative;
-      z-index: 10;
-    }
-    .empty {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 24px;
-      color: rgb(211, 208, 208);
-    }
+  .widget-container {
+    padding: 0;
+  }
+  .danger {
+    color: #f56c6c;
   }
 }
-.props {
-  position: relative;
-}
+
 .empty {
-  width: 100%;
-  height: 100%;
   position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   font-size: 24px;
   color: rgb(211, 208, 208);
 }

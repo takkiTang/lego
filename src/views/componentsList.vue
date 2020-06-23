@@ -1,26 +1,24 @@
 <template>
-  <el-container direction="vertical" class="com-list">
+  <el-container direction="vertical" class="list-container">
     <el-main>
-      <template v-for="item in componentsList">
-        <nav>{{item.title}}</nav>
-        <el-row :gutter="20">
-          <draggable
-            :list="item.list"
-            :group="{ name: 'component', pull: 'clone', put: false }"
-            :sort="false"
-          >
-            <el-col v-for="(subItem,i) in item.list" :key="i" :span="12">
-              <div class="item">
-                <i
-                  v-if="subItem.icon"
-                  :class="subItem.icon"
-                  class="iconfont"
-                  style="margin-right:5px"
-                ></i>
-                <span>{{subItem.name}}</span>
-              </div>
-            </el-col>
-          </draggable>
+      <template v-for="(item,index) in componentsList">
+        <el-row :key="index">
+          <nav>{{item.title}}</nav>
+          <el-row :gutter="20">
+            <draggable :list="item.list" v-bind="draggableOptions">
+              <el-col v-for="(subItem,i) in item.list" :key="i" :span="12">
+                <div class="item">
+                  <i
+                    v-if="subItem.icon"
+                    :class="subItem.icon"
+                    class="iconfont"
+                    style="margin-right:5px"
+                  ></i>
+                  <span>{{subItem.name}}</span>
+                </div>
+              </el-col>
+            </draggable>
+          </el-row>
         </el-row>
       </template>
     </el-main>
@@ -34,17 +32,38 @@ export default {
   components: { draggable },
   data() {
     return {
+      draggableOptions: {
+        group: { name: "component", pull: "clone", put: false },
+        sort: false
+      },
       componentsList: [
         {
-          title: "布局",
+          title: "布局组件",
           list: [
             {
-              name: "row",
-              type: "el-row"
-            },
-            {
-              name: "col",
-              type: "el-col"
+              name: "栅格布局",
+              type: "el-row",
+              props: {
+                gutter: 10
+              },
+              list: [
+                {
+                  type: "el-col",
+                  canNested: true,
+                  list: [],
+                  props: {
+                    span: 12
+                  }
+                },
+                {
+                  type: "el-col",
+                  canNested: true,
+                  list: [],
+                  props: {
+                    span: 12
+                  }
+                }
+              ]
             }
           ]
         },
@@ -138,15 +157,13 @@ export default {
         }
       ]
     };
-  },
-  methods: {
   }
 };
 </script>
 
 <style lang="scss">
 @import url("http://at.alicdn.com/t/font_1813932_qt6tdjdi0zm.css");
-.com-list {
+.list-container {
   .item {
     margin: 10px 0;
     border: 1px solid #f4f6fc;

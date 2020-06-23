@@ -5,14 +5,18 @@
     v-bind="computedItem.props"
     :value="value"
     v-on="$listeners"
-  ></render>
+  > 
+  <slot></slot>
+  </render>
   <component
     v-else
     :is="computedItem.tag"
     v-bind="computedItem.props"
     v-on="$listeners"
     :value="value"
-  ></component>
+  >
+    <slot></slot>
+  </component>
 </template>
 
 <script>
