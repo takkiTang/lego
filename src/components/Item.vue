@@ -2,16 +2,16 @@
   <render
     v-if="computedItem.render"
     :render="computedItem.render"
-    v-bind="computedItem.props"
+    v-bind="computedItem.models"
     :value="value"
     v-on="$listeners"
-  > 
-  <slot></slot>
+  >
+    <slot></slot>
   </render>
   <component
     v-else
     :is="computedItem.tag"
-    v-bind="computedItem.props"
+    v-bind="computedItem.models"
     v-on="$listeners"
     :value="value"
   >
@@ -46,7 +46,7 @@ export default {
       } else if (def.tag) {
         item.tag = def.tag;
       }
-      item.props = Object.assign({}, def.props, item.props);
+      item.models = Object.assign({}, def.models, item.models);
       return item;
     }
   }

@@ -3,7 +3,7 @@ export default [
         label: '内容',
         key: 'label',
         type: 'el-input',
-        props: {
+        models: {
             placeholder: '请输入内容'
         },
     },
@@ -11,7 +11,7 @@ export default [
         label: '类型',
         key: 'type',
         type: 'el-select',
-        props: {
+        models: {
             placeholder: '请选择类型',
             clearable:true,
             options: [{
@@ -44,18 +44,18 @@ export default [
     {
         label: '朴素按钮',
         key: 'plain',
+        type: 'el-switch'
+    },
+    {
+        label: '圆角按钮',
+        key: 'round',
         type: 'el-switch',
     },
-    // {
-    //     label: '圆角按钮',
-    //     key: 'round',
-    //     type: 'el-switch',
-    // },
-    // {
-    //     label: '圆形按钮',
-    //     key: 'circle',
-    //     type: 'el-switch',
-    // },
+    {
+        label: '圆形按钮',
+        key: 'circle',
+        type: 'el-switch',
+    },
     {
         label: '禁用',
         key: 'disabled',
@@ -65,7 +65,7 @@ export default [
         label: '图标',
         key: 'icon',
         type: 'el-input',
-        props: {
+        models: {
             placeholder: '请输入图标'
         },
     },
@@ -73,7 +73,7 @@ export default [
         label: '尺寸',
         key: 'size',
         type: 'el-select',
-        props: {
+        models: {
             options: [{
                     label: '中等',
                     value: 'medium'

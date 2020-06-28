@@ -3,7 +3,7 @@
     <template v-if="canNested">
       <draggable
         v-if="canNested"
-        v-model="list"
+        :list="list"
         @add="handleAdd"
         class="widget-list"
         v-bind="draggableOptions"
@@ -19,19 +19,20 @@
               v-model="item.list"
               :canNested="item.canNested"
               :actived="actived"
+              @input="handleInput"
               @active="handleActive"
             ></componentItem>
           </Item>
           <div class="widget-item_action" v-show="actived.id === item.id">
-            <!-- <el-button
+            <el-button
               circle
               round
               plain
               type="primary"
               size="mini"
               icon="el-icon-copy-document"
-              @click.stop="handleCopy(index)"
-            ></el-button> -->
+              @click.stop="handleClone(index)"
+            ></el-button>
             <el-button
               circle
               round
@@ -100,17 +101,17 @@ export default {
     };
   },
   methods: {
-    test(v) {
-      console.log(this._.cloneDeep(v));
-    },
     handleAdd({ newIndex }) {
       const id = uuid();
       this.$set(this.list, newIndex, {
         ...this.list[newIndex],
         id
       });
+      console.log('111')
       this.handleInput();
-      this.$emit("active", _.cloneDeep(this.list[newIndex]));
+      this.$nextTick(() => {
+        this.handleActive(_.cloneDeep(this.list[newIndex]));
+      });
     },
     handleRemove(index) {
       if (this.list.length === index + 1) {
@@ -127,35 +128,46 @@ export default {
         this.handleInput();
       });
     },
-    handleCopy(index) {
-      const data = _.cloneDeep(this.list[index]);
-      // 更新id
-      data.id = uuid();
+    handleClone(index) {
+      let data = _.cloneDeep(this.list[index]);
+      data = this.updateDataId(data);
       this.list.splice(index + 1, 0, data);
       this.handleInput();
-      this.handleActive(data);
+      this.$nextTick(() => {
+        this.handleActive(data);
+      });
+    },
+    updateDataId(data) {
+      data.id = uuid();
+      if (data.list) {
+        data.list.forEach(v => this.updateDataId(v));
+      }
+      return data;
     },
     handleActive(data) {
-      this.$emit("active", data);
+      this.$emit("active", _.cloneDeep(data));
     },
     handleInput() {
-      this.$emit("input", this.list);
+      console.log(222)
+      console.log(_.cloneDeep(this.list));
+      this.$emit("input", _.cloneDeep(this.list));
     }
   },
   watch: {
     value: {
       handler() {
         const data = _.cloneDeep(this.value);
-        let flag = false;
-        data.forEach(item => {
-          if (!item.id) {
-            item.id = uuid();
-            flag = true;
-          }
-        });
-        if (flag) {
-          this.$emit("input", data);
-        }
+        // let flag = false;
+        // data.forEach(item => {
+        //   if (!item.id) {
+        //     item.id = uuid();
+        //     flag = true;
+        //   }
+        // });
+        // if (flag) {
+        //   console.log(222)
+        //   this.$emit("input", data);
+        // }
         this.list = data;
       },
       immediate: true
@@ -166,6 +178,7 @@ export default {
 
 <style lang="scss">
 .widget-item-container {
+  width: 100%;
   height: 100%;
   .widget-list {
     height: 100%;

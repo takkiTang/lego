@@ -8,7 +8,7 @@ export default [{
     label: '表格选项',
     key: 'options',
     type: 'optionConfig',
-    props: {
+    models: {
       props: {
         value: 'prop',
         label: 'label'
@@ -41,7 +41,7 @@ export default [{
     label: '尺寸',
     key: 'size',
     type: 'el-select',
-    props: {
+    models: {
       options: [{
           label: '中等',
           value: 'medium'

@@ -12,7 +12,7 @@ export default [{
     label: '显示类型',
     key: 'type',
     type: 'el-select',
-    props: {
+    models: {
       options: [{
           label: '日',
           value: 'date'
@@ -55,7 +55,7 @@ export default [{
     label: '尺寸',
     key: 'size',
     type: 'el-select',
-    props: {
+    models: {
       options: [{
           label: '中等',
           value: 'medium'
@@ -75,7 +75,7 @@ export default [{
     label: '显示格式',
     key: 'format',
     type: 'el-input',
-    props: {
+    models: {
       placeholder: 'yyyy-MM-dd'
     }
   },
@@ -83,7 +83,7 @@ export default [{
     label: '绑定格式',
     key: 'value-format',
     type: 'el-input',
-    props: {
+    models: {
       placeholder: 'yyyy-MM-dd'
     }
   },
@@ -107,7 +107,7 @@ export default [{
     label: '分隔符',
     key: 'range-separator',
     type: 'el-input',
-    props: {
+    models: {
       placeholder: '-'
     }
   }

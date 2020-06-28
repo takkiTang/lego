@@ -19,33 +19,15 @@
             icon="el-icon-document"
             @click="codeVisible = true"
           >生成代码</el-button>
-          <!-- <el-button
-            type="text"
-            class="danger"
-            size="large"
-            icon="el-icon-delete"
-          >清空</el-button>-->
+          <el-button type="text" class="danger" size="large" icon="el-icon-delete">清空</el-button>
         </el-header>
         <el-main class="widget-container">
           <componentItem v-model="list" :actived="actived" @active="handleActive" :canNested="true"></componentItem>
           <div v-if="!list.length" class="empty">从左侧拖拽来添加组件</div>
         </el-main>
       </el-container>
-      <el-aside style="background-color: rgb(238, 241, 246)" class="props" width="350px">
-        <!-- <el-main v-if="Object.keys(actived).length">
-          <el-form>
-            <nav>字段属性</nav>
-            <el-form-item
-              v-for="model in computedModels"
-              :key="model.label"
-              :label="model.label"
-              label-width="100px"
-            >
-              <Item :item="model" v-model="list[activeIndex].props[model.key]"></Item>
-            </el-form-item>
-          </el-form>
-        </el-main>
-        <div v-else class="empty">从左侧拖拽来添加组件</div>-->
+      <el-aside style="background-color: rgb(238, 241, 246)" class="models" width="350px">
+        <componentModel v-model="list[activeIndex]" :models="computedModels"></componentModel>
       </el-aside>
     </el-container>
     <!-- <el-dialog title="生成代码" :visible.sync="codeVisible">
@@ -59,15 +41,16 @@
 import { v4 as uuid } from "uuid";
 import componentsList from "./views/componentsList";
 import componentItem from "@/views/componentItem";
-import Item from "@/components/Item";
-import Parse from "@/components/Parse";
+import componentModel from "@/views/componentModel";
 import models from "@/elementModels";
-import draggable from "vuedraggable";
-import test from "@/components/test";
 
 export default {
   name: "app",
-  components: { componentsList, componentItem, draggable, Item, Parse, test },
+  components: {
+    componentsList,
+    componentItem,
+    componentModel
+  },
   data() {
     return {
       list: [],
@@ -85,9 +68,6 @@ export default {
     }
   },
   methods: {
-    test(v){
-      console.log(this._.cloneDeep(v))
-    },
     handleActive(data) {
       this.actived = data;
     }
@@ -116,6 +96,9 @@ export default {
   .danger {
     color: #f56c6c;
   }
+}
+.models{
+  position: relative;
 }
 
 .empty {

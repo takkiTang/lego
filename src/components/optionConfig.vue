@@ -23,7 +23,7 @@
         </el-col>
       </el-row>
     </draggable>
-    <el-button type="text" @click="handelAdd">添加选项</el-button>
+    <el-button type="text" @click="handelAdd">{{addText}}</el-button>
   </el-row>
 </template>
 
@@ -49,6 +49,10 @@ export default {
           value: "value"
         };
       }
+    },
+    addText: {
+      type: String,
+      default: "添加选项"
     }
   },
   methods: {

@@ -43,7 +43,7 @@ export default {
             {
               name: "栅格布局",
               type: "el-row",
-              props: {
+              models: {
                 gutter: 10
               },
               list: [
@@ -51,7 +51,7 @@ export default {
                   type: "el-col",
                   canNested: true,
                   list: [],
-                  props: {
+                  models: {
                     span: 12
                   }
                 },
@@ -59,7 +59,7 @@ export default {
                   type: "el-col",
                   canNested: true,
                   list: [],
-                  props: {
+                  models: {
                     span: 12
                   }
                 }
@@ -73,7 +73,7 @@ export default {
             {
               name: "按钮",
               type: "el-button",
-              props: {
+              models: {
                 label: "按钮",
                 type: "primary"
               }
@@ -81,7 +81,7 @@ export default {
             {
               name: "选择器",
               type: "el-select",
-              props: {
+              models: {
                 options: [
                   {
                     label: "选项1",
@@ -93,14 +93,14 @@ export default {
             {
               name: "输入框",
               type: "el-input",
-              props: {
+              models: {
                 placeholder: "请输入"
               }
             },
             {
               name: "单选框组",
               type: "el-radio-group",
-              props: {
+              models: {
                 options: [
                   {
                     label: "选项1",
@@ -117,7 +117,7 @@ export default {
               name: "多选框组",
               type: "el-checkbox-group",
               value: [],
-              props: {
+              models: {
                 options: [
                   {
                     label: "选项1",
@@ -133,14 +133,14 @@ export default {
             {
               name: "日期选择器",
               type: "el-date-picker",
-              props: {
+              models: {
                 placeholder: "请选择日期"
               }
             },
             {
               name: "表格",
               type: "el-table",
-              props: {
+              models: {
                 options: [
                   {
                     label: "选项1",

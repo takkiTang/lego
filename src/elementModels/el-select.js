@@ -3,7 +3,7 @@ export default [{
         label: '字段标示',
         key: 'key',
         type: 'el-input',
-        props: {
+        models: {
             placeholder: '请输入字段标示'
         }
     },
@@ -11,7 +11,7 @@ export default [{
         label: '占位内容',
         key: 'placeholder',
         type: 'el-input',
-        props: {
+        models: {
             placeholder: '请输入占位内容',
         }
     },
@@ -44,7 +44,7 @@ export default [{
         label: '尺寸',
         key: 'size',
         type: 'el-select',
-        props: {
+        models: {
             options: [{
                     label: '中等',
                     value: 'medium'

@@ -1,24 +1,26 @@
 export default [{
     label: '栅格间隔',
     key: 'gutter',
-    type: 'el-input-number'
+    type: 'el-input-number',
   },
   {
-    label: '布局模式',
+    label: 'Flex布局',
     key: 'type',
-    type: 'el-select',
-    props: {
-      options: [{
-        label: 'flex',
-        value: 'flex'
-      }]
+    type: 'el-switch',
+    models: {
+      'active-value': 'flex',
+      'inactive-value': ' '
+
     }
   },
   {
     label: '水平排列',
     key: 'justify',
     type: 'el-select',
-    props: {
+    ifRender(models){
+      return  models.type === 'flex'
+    },
+    models: {
       options: [{
           label: 'start',
           value: 'start'
@@ -46,7 +48,10 @@ export default [{
     label: '垂直排列',
     key: 'align',
     type: 'el-select',
-    props: {
+    ifRender(models){
+      return  models.type === 'flex'
+    },
+    models: {
       options: [{
           label: 'top',
           value: 'top'
@@ -61,10 +66,5 @@ export default [{
         }
       ]
     }
-  },
-  {
-    label: '自定义标签',
-    key: 'tag',
-    type: 'el-input'
   },
 ]

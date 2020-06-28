@@ -9,7 +9,7 @@ export default {
         }
     },
     'el-select': {
-        render: (h, { options, ...props }, listeners) => {
+        render: (h, { options = [], ...props }, listeners) => {
             return (
                 <el-select  {...{ props }} {...{ on: listeners }}>
                     {options.map(option => {
@@ -95,7 +95,7 @@ export default {
         tag: 'optionConfig'
     },
     'fence': {
-        render: (h, { options, ...props }, listeners,children) => {
+        render: (h, { options=[], ...props }, listeners,children) => {
             return (
                 <el-row  {...{ props }}>
                     {options.map(option => {
