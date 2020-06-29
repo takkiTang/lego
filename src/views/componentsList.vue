@@ -44,7 +44,7 @@ export default {
               name: "栅格布局",
               type: "el-row",
               models: {
-                gutter: 10
+                gutter: 0,
               },
               list: [
                 {
@@ -143,11 +143,11 @@ export default {
               models: {
                 options: [
                   {
-                    label: "选项1",
+                    label: "列1",
                     prop: "值1"
                   },
                   {
-                    label: "选项2",
+                    label: "列2",
                     prop: "值2"
                   }
                 ]

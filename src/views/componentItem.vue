@@ -102,9 +102,6 @@ export default {
     };
   },
   methods: {
-    test(val) {
-      console.log(121212, val);
-    },
     handleAdd({ newIndex }) {
       const id = uuid();
       this.$set(this.list, newIndex, {
@@ -151,8 +148,6 @@ export default {
       this.$emit("active", _.cloneDeep(data));
     },
     handleInput() {
-      console.log(222);
-      console.log(_.cloneDeep(this.list));
       this.$emit("input", _.cloneDeep(this.list));
     }
   },
@@ -170,7 +165,6 @@ export default {
 
 <style lang="scss">
 .widget-item-container {
-  width: 100%;
   height: 100%;
   .widget-list {
     height: 100%;
@@ -201,7 +195,7 @@ export default {
         border-color: #1989fa;
       }
       .widget-group-item {
-        padding: 5px;
+        padding-top: 5px;
         .ghost {
           background: #e6a23c;
           border: 2px solid #e6a23c;

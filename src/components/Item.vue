@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import _ from 'loadsh'
 import optionConfig from "@/components/optionConfig";
 import render from "./render";
 import ElementMapping from "@/elementMapping";
@@ -35,7 +36,7 @@ export default {
   },
   computed: {
     computedItem() {
-      const item = this._.cloneDeep(this.item);
+      const item = _.cloneDeep(this.item);
       // 表单控件的类型
       let type = item.type || "el-button";
       // 对应到组件映射表

@@ -11,15 +11,15 @@
             type="text"
             size="large"
             icon="el-icon-document"
-            @click="josnVisible = true"
-          >生成JSON</el-button>
-          <el-button
-            type="text"
-            size="large"
-            icon="el-icon-document"
             @click="codeVisible = true"
           >生成代码</el-button>
-          <el-button type="text" class="danger" size="large" icon="el-icon-delete">清空</el-button>
+          <el-button
+            type="text"
+            class="danger"
+            size="large"
+            icon="el-icon-delete"
+            @click="handleEmpty"
+          >清空</el-button>
         </el-header>
         <el-main class="widget-container">
           <componentItem v-model="list" :actived="actived" @active="handleActive" :canNested="true"></componentItem>
@@ -30,10 +30,9 @@
         <componentModel v-model="list[activeIndex]" :models="computedModels"></componentModel>
       </el-aside>
     </el-container>
-    <!-- <el-dialog title="生成代码" :visible.sync="codeVisible">
+    <el-dialog title="生成代码" :visible.sync="codeVisible">
       <Parse :list="list"></Parse>
     </el-dialog>
-    <el-dialog title="生成JSON" :visible.sync="josnVisible"></el-dialog>-->
   </div>
 </template>
 
@@ -70,6 +69,26 @@ export default {
   methods: {
     handleActive(data) {
       this.actived = data;
+    },
+    handleEmpty() {
+      this.$confirm("此操作将清空数据, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.list = [];
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   },
   watch: {}
@@ -97,7 +116,7 @@ export default {
     color: #f56c6c;
   }
 }
-.models{
+.models {
   position: relative;
 }
 

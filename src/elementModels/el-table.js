@@ -9,10 +9,13 @@ export default [{
     key: 'options',
     type: 'optionConfig',
     models: {
+      addText: '添加列',
+      col1Text: '列',
+      col2Text: '值',
       props: {
-        value: 'prop',
-        label: 'label'
-      }
+        col1: 'label',
+        col2: 'prop'
+      },
     }
   },
   {

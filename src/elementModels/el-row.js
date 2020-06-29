@@ -10,7 +10,6 @@ export default [{
     models: {
       'active-value': 'flex',
       'inactive-value': ' '
-
     }
   },
   {

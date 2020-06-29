@@ -1,5 +1,4 @@
 // 组件对应
-
 export default {
     'el-button': {
         render: (h, { label, ...props }) => {

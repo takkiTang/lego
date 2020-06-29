@@ -6,10 +6,28 @@
           <i class="el-icon-s-operation drag" size="mini"></i>
         </el-col>
         <el-col :span="9">
-          <el-input v-model="item[props.label]" size="mini" @change="handleChange"></el-input>
+          <el-input
+            v-if="item.type === 'el-col'"
+            v-model="item.models[props.col1]"
+            size="mini"
+            @change="handleChange"
+            :placeholder="col1Text"
+          ></el-input>
+          <el-input
+            v-else
+            v-model="item[props.col1]"
+            size="mini"
+            @change="handleChange"
+            :placeholder="col1Text"
+          ></el-input>
         </el-col>
-        <el-col :span="9">
-          <el-input v-model="item[props.value]" size="mini" @change="handleChange"></el-input>
+        <el-col :span="9" v-if="showCol2">
+          <el-input
+            v-model="item[props.col2]"
+            size="mini"
+            @change="handleChange"
+            :placeholder="col2Text"
+          ></el-input>
         </el-col>
         <el-col :span="3">
           <el-button
@@ -28,6 +46,7 @@
 </template>
 
 <script>
+import _ from "loadsh";
 import draggable from "vuedraggable";
 
 export default {
@@ -45,23 +64,42 @@ export default {
       type: Object,
       default: () => {
         return {
-          label: "label",
-          value: "value"
+          col1: "label",
+          col2: "value"
         };
       }
     },
     addText: {
       type: String,
       default: "添加选项"
+    },
+    col1Text: {
+      type: String,
+      default: "选项"
+    },
+    col2Text: {
+      type: String,
+      default: "值"
+    },
+    showCol2: {
+      type: Boolean,
+      default: true
+    },
+    pushValue: {
+      type: Object
     }
   },
   methods: {
     handelAdd() {
       const len = this.options.length + 1;
-      this.options.push({
-        [this.props.label]: `选项${len}`,
-        [this.props.value]: `值${len}`
-      });
+      if (this.pushValue) {
+        this.options.push(this.pushValue);
+      } else {
+        this.options.push({
+          [this.props.col1]: `${this.col1Text}${len}`,
+          [this.props.col2]: `${this.col2Text}${len}`
+        });
+      }
       this.handleChange();
     },
     handelRemove(index) {
@@ -69,13 +107,13 @@ export default {
       this.handleChange();
     },
     handleChange() {
-      this.$emit("input", this.options);
+      this.$emit("input", _.cloneDeep(this.options));
     }
   },
   watch: {
     value: {
       handler(val) {
-        this.options = this._.cloneDeep(val);
+        this.options = _.cloneDeep(val);
       },
       immediate: true
     }
