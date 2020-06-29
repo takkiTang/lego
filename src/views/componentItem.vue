@@ -3,8 +3,9 @@
     <template v-if="canNested">
       <draggable
         v-if="canNested"
-        :list="list"
+        v-model="list"
         @add="handleAdd"
+        @remove="handleInput"
         class="widget-list"
         v-bind="draggableOptions"
       >
@@ -19,8 +20,8 @@
               v-model="item.list"
               :canNested="item.canNested"
               :actived="actived"
-              @input="handleInput"
               @active="handleActive"
+              @input="handleInput"
             ></componentItem>
           </Item>
           <div class="widget-item_action" v-show="actived.id === item.id">
@@ -53,8 +54,8 @@
             v-model="item.list"
             :canNested="item.canNested"
             :actived="actived"
-            @input="handleInput"
             @active="handleActive"
+            @input="handleInput"
           ></componentItem>
         </Item>
       </template>
@@ -101,13 +102,15 @@ export default {
     };
   },
   methods: {
+    test(val) {
+      console.log(121212, val);
+    },
     handleAdd({ newIndex }) {
       const id = uuid();
       this.$set(this.list, newIndex, {
         ...this.list[newIndex],
         id
       });
-      console.log('111')
       this.handleInput();
       this.$nextTick(() => {
         this.handleActive(_.cloneDeep(this.list[newIndex]));
@@ -148,7 +151,7 @@ export default {
       this.$emit("active", _.cloneDeep(data));
     },
     handleInput() {
-      console.log(222)
+      console.log(222);
       console.log(_.cloneDeep(this.list));
       this.$emit("input", _.cloneDeep(this.list));
     }
@@ -157,17 +160,6 @@ export default {
     value: {
       handler() {
         const data = _.cloneDeep(this.value);
-        // let flag = false;
-        // data.forEach(item => {
-        //   if (!item.id) {
-        //     item.id = uuid();
-        //     flag = true;
-        //   }
-        // });
-        // if (flag) {
-        //   console.log(222)
-        //   this.$emit("input", data);
-        // }
         this.list = data;
       },
       immediate: true
