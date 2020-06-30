@@ -18,7 +18,7 @@ export default {
     ...props
   }) {
     return `<el-select v-model="${key}" ${prop2Code(props)}>
-      ${options.map(option => `<el-option ${prop2Code(option)}></el-option>`).join('\n  ')}
+      ${options.map(option => `<el-option ${prop2Code(option)}></el-option>`).join('\n')}
     </el-select>`
   },
   'el-radio-group'({
@@ -28,7 +28,7 @@ export default {
     ...props
   }) {
     return `<el-radio-group v-model="${key}" ${prop2Code(props)}>
-    ${options.map(({ label, value }) => `<el-radio  label="${value}" ${border ? border : ''}>${label}</el-radio>`).join('\n  ')}
+    ${options.map(({ label, value }) => `<el-radio  label="${value}" ${border ? border : ''}>${label}</el-radio>`).join('\n')}
   </el-radio-group>`
   },
   'el-checkbox-group'({    key,
@@ -36,14 +36,14 @@ export default {
     options,
     ...props}){
       return `<el-checkbox-group v-model="${key}" ${prop2Code(props)}>
-      ${options.map(({ label, value }) => `<el-checkbox  label="${value}" ${border ? border : ''}>${label}</el-checkbox>`).join('\n  ')}
+      ${options.map(({ label, value }) => `<el-checkbox  label="${value}" ${border ? border : ''}>${label}</el-checkbox>`).join('\n')}
     </el-checkbox-group>`
     },
     'el-table'({    key,
       options,
       ...props}){
         return `<el-table ${prop2Code(props)}>
-        ${options.map(( option) => `<el-table-colmun  ${prop2Code(option)} ></el-table-colmun>`).join('\n  ')}
+        ${options.map(( option) => `<el-table-colmun  ${prop2Code(option)} ></el-table-colmun>`).join('\n')}
       </el-table>`
       }
 }

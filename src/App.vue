@@ -27,12 +27,10 @@
         </el-main>
       </el-container>
       <el-aside style="background-color: rgb(238, 241, 246)" class="models" width="350px">
-        <componentModel v-model="list[activeIndex]" :models="computedModels"></componentModel>
+        <componentModel v-model="actived" @input="handleInput" :models="computedModels"></componentModel>
       </el-aside>
     </el-container>
-    <el-dialog title="生成代码" :visible.sync="codeVisible">
-      <Parse :list="list"></Parse>
-    </el-dialog>
+    <Parse :list="list" :visible.sync="codeVisible"></Parse>
   </div>
 </template>
 
@@ -42,34 +40,33 @@ import componentsList from "./views/componentsList";
 import componentItem from "@/views/componentItem";
 import componentModel from "@/views/componentModel";
 import models from "@/elementModels";
+import Parse from "@/components/Parse";
 
 export default {
   name: "app",
   components: {
     componentsList,
     componentItem,
-    componentModel
+    componentModel,
+    Parse
   },
   data() {
     return {
       list: [],
       actived: {},
-      codeVisible: false,
-      josnVisible: false
+      codeVisible: false
     };
   },
   computed: {
     computedModels() {
       return Object.keys(this.actived).length ? models[this.actived.type] : [];
-    },
-    activeIndex() {
-      return this.list.findIndex(v => v.id == this.actived.id);
     }
   },
   methods: {
     handleActive(data) {
       this.actived = data;
     },
+    handleInput(val) {},
     handleEmpty() {
       this.$confirm("此操作将清空数据, 是否继续?", "提示", {
         confirmButtonText: "确定",
