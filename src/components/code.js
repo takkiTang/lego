@@ -55,7 +55,7 @@ export const codes = {
   'el-row'(props, list = []) {
     return `
       <el-row  ${prop2Code(props)}>
-        ${list.map(col => `<el-col ${prop2Code(col.models)}>${col.list.map(v => codes[v.type](v.models)).join('\n')}</el-col>`).join('\n')}
+        ${list.map(col => `<el-col ${prop2Code(col.models)}>${col.list.map(v => codes[v.type](v.models,v.list)).join('\n')}</el-col>`).join('\n')}
       </el-row>`
   }
 }

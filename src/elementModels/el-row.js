@@ -6,10 +6,15 @@ export default [{
   {
     label: 'Flex布局',
     key: 'type',
-    type: 'el-switch',
+    type: 'el-select',
     models: {
-      'active-value': 'flex',
-      'inactive-value': " "
+      options:[
+        {
+          label:'flex',
+          value:'flex'
+        }
+      ],
+      clearable:true
     }
   },
   {

@@ -43,6 +43,7 @@ export default {
             {
               name: "栅格布局",
               type: "el-row",
+              icon:'icon-row',
               models: {
                 gutter: 0
               },
@@ -73,6 +74,7 @@ export default {
             {
               name: "按钮",
               type: "el-button",
+              icon:'icon-btn',
               models: {
                 label: "按钮",
                 type: "primary"
@@ -81,6 +83,7 @@ export default {
             {
               name: "选择器",
               type: "el-select",
+              icon:'icon-select',
               hasKey: true,
               getKeyValue(models) {
                 return models.multiple ? [] : undefined;
@@ -97,6 +100,7 @@ export default {
             {
               name: "输入框",
               type: "el-input",
+              icon:'icon-input',
               hasKey: true,
               models: {
                 placeholder: "请输入"
@@ -105,6 +109,7 @@ export default {
             {
               name: "单选框组",
               type: "el-radio-group",
+              icon:'icon-radio',
               hasKey: true,
               models: {
                 options: [
@@ -122,6 +127,7 @@ export default {
             {
               name: "多选框组",
               type: "el-checkbox-group",
+              icon:'icon-checkbox',
               hasKey: true,
               keyValue: [],
               models: {
@@ -138,8 +144,9 @@ export default {
               }
             },
             {
-              name: "日期选择器",
+              name: "日期选择",
               type: "el-date-picker",
+              icon:'icon-date',
               hasKey: true,
               keyValue: [],
               models: {
@@ -149,6 +156,7 @@ export default {
             {
               name: "表格",
               type: "el-table",
+              icon:'icon-table',
               hasKey: true,
               keyValue: [],
               models: {
@@ -173,7 +181,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url("https://at.alicdn.com/t/font_1813932_qt6tdjdi0zm.css");
+@import url("https://at.alicdn.com/t/font_1813932_s91zza6kc1.css");
 .list-container {
   .item {
     margin: 10px 0;

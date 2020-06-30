@@ -73,6 +73,7 @@ export default {
       })
         .then(() => {
           this.list = [];
+          this.actived = {}
           this.$message({
             type: "success",
             message: "删除成功!"
