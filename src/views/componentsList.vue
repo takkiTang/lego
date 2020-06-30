@@ -44,7 +44,7 @@ export default {
               name: "栅格布局",
               type: "el-row",
               models: {
-                gutter: 0,
+                gutter: 0
               },
               list: [
                 {
@@ -81,6 +81,10 @@ export default {
             {
               name: "选择器",
               type: "el-select",
+              hasKey: true,
+              getKeyValue(models) {
+                return models.multiple ? [] : undefined;
+              },
               models: {
                 options: [
                   {
@@ -93,6 +97,7 @@ export default {
             {
               name: "输入框",
               type: "el-input",
+              hasKey: true,
               models: {
                 placeholder: "请输入"
               }
@@ -100,6 +105,7 @@ export default {
             {
               name: "单选框组",
               type: "el-radio-group",
+              hasKey: true,
               models: {
                 options: [
                   {
@@ -116,7 +122,8 @@ export default {
             {
               name: "多选框组",
               type: "el-checkbox-group",
-              value: [],
+              hasKey: true,
+              keyValue: [],
               models: {
                 options: [
                   {
@@ -133,6 +140,8 @@ export default {
             {
               name: "日期选择器",
               type: "el-date-picker",
+              hasKey: true,
+              keyValue: [],
               models: {
                 placeholder: "请选择日期"
               }
@@ -140,6 +149,8 @@ export default {
             {
               name: "表格",
               type: "el-table",
+              hasKey: true,
+              keyValue: [],
               models: {
                 options: [
                   {

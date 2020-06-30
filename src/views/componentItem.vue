@@ -15,7 +15,7 @@
           :class="[{'active':actived.id === item.id},item.list ? 'widget-group' :'widget-item']"
           @click.stop="handleActive(item)"
         >
-          <Item :item="item" :value="item.value">
+          <Item :item="item" :value.sync="item.keyValue">
             <componentItem
               v-model="item.list"
               :canNested="item.canNested"
@@ -49,7 +49,7 @@
     </template>
     <template v-else>
       <template v-for="(item,index) in list">
-        <Item :item="item" :value="item.value" :key="item.id" class="widget-group-item">
+        <Item :item="item" :value.sync="item.keyValue" :key="item.id" class="widget-group-item">
           <componentItem
             v-model="item.list"
             :canNested="item.canNested"
@@ -104,6 +104,10 @@ export default {
   methods: {
     handleAdd({ newIndex }) {
       const id = uuid();
+      let item = this.list[newIndex];
+      if (item.hasKey) {
+        item.models.key = item.type + "_" + id;
+      }
       this.$set(this.list, newIndex, {
         ...this.list[newIndex],
         id
@@ -139,6 +143,9 @@ export default {
     },
     updateDataId(data) {
       data.id = uuid();
+      if (data.hasKey) {
+        data.models.key = data.type + "_" + data.id;
+      }
       if (data.list) {
         data.list.forEach(v => this.updateDataId(v));
       }
@@ -158,6 +165,22 @@ export default {
         this.list = data;
       },
       immediate: true
+    },
+    actived(val) {
+      const index = this.list.findIndex(v => v.id === val.id);
+      if (index !== -1) {
+        this.$set(this.list, index, val);
+        this.handleInput();
+      }
+      // 动态修改 keyvalue
+      if (typeof val.getKeyValue === "function") {
+        this.$set(
+          this.actived,
+          "keyValue",
+          val.getKeyValue(this.actived.models)
+        );
+        this.handleInput();
+      }
     }
   }
 };
@@ -165,6 +188,7 @@ export default {
 
 <style lang="scss">
 .widget-item-container {
+  width: 100%;
   height: 100%;
   .widget-list {
     height: 100%;

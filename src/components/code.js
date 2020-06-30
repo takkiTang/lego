@@ -1,4 +1,4 @@
-export default {
+export const codes = {
   'el-button'({
     key,
     label,
@@ -31,27 +31,42 @@ export default {
     ${options.map(({ label, value }) => `<el-radio  label="${value}" ${border ? border : ''}>${label}</el-radio>`).join('\n')}
   </el-radio-group>`
   },
-  'el-checkbox-group'({    key,
+  'el-checkbox-group'({ key,
     border,
     options,
-    ...props}){
-      return `<el-checkbox-group v-model="${key}" ${prop2Code(props)}>
+    ...props }) {
+    return `<el-checkbox-group v-model="${key}" ${prop2Code(props)}>
       ${options.map(({ label, value }) => `<el-checkbox  label="${value}" ${border ? border : ''}>${label}</el-checkbox>`).join('\n')}
     </el-checkbox-group>`
-    },
-    'el-table'({    key,
-      options,
-      ...props}){
-        return `<el-table ${prop2Code(props)}>
-        ${options.map(( option) => `<el-table-colmun  ${prop2Code(option)} ></el-table-colmun>`).join('\n')}
+  },
+  'el-table'({ key,
+    options,
+    ...props }) {
+    return `<el-table ${prop2Code(props)} :data="${key}">
+        ${options.map((option) => `<el-table-colmun  ${prop2Code(option)} ></el-table-colmun>`).join('\n')}
       </el-table>`
-      }
+  },
+  'el-date-picker'({
+    key,
+    ...props
+  }) {
+    return `<el-date-picker ${prop2Code(props)} v-model="${key}"></el-date-picker>`
+  },
+  'el-row'(props, list = []) {
+    return `
+      <el-row  ${prop2Code(props)}>
+        ${list.map(col => `<el-col ${prop2Code(col.models)}>${col.list.map(v => codes[v.type](v.models)).join('\n')}</el-col>`).join('\n')}
+      </el-row>`
+  }
 }
+
+export default codes
+
 
 function prop2Code(obj) {
   let code = []
   for (let key in obj) {
-    obj[key] && code.push(`${key}="${obj[key]}"`)
+    obj[key] && code.push(`${['number', 'boolean'].find(v => v === typeof obj[key]) ? ':' :''}${key}="${obj[key]}"`)
   }
   return code.join(' ')
 }

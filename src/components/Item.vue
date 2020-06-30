@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import _ from 'loadsh'
+import _ from "loadsh";
 import optionConfig from "@/components/optionConfig";
 import render from "./render";
 import ElementMapping from "@/elementMapping";

@@ -6,7 +6,6 @@
       </el-aside>
       <el-container class="preview">
         <el-header class="btn-bar">
-          <!-- <el-button type="text" size="large" icon="el-icon-view">预览</el-button> -->
           <el-button
             type="text"
             size="large"
@@ -27,7 +26,7 @@
         </el-main>
       </el-container>
       <el-aside style="background-color: rgb(238, 241, 246)" class="models" width="350px">
-        <componentModel v-model="actived" @input="handleInput" :models="computedModels"></componentModel>
+        <componentModel v-model="actived" :models="computedModels"></componentModel>
       </el-aside>
     </el-container>
     <Parse :list="list" :visible.sync="codeVisible"></Parse>
@@ -66,7 +65,6 @@ export default {
     handleActive(data) {
       this.actived = data;
     },
-    handleInput(val) {},
     handleEmpty() {
       this.$confirm("此操作将清空数据, 是否继续?", "提示", {
         confirmButtonText: "确定",

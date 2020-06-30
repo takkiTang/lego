@@ -8,7 +8,7 @@
         <el-col :span="9">
           <el-input
             v-if="item.type === 'el-col'"
-            v-model="item.models[props.col1]"
+            v-model.number="item.models[props.col1]"
             size="mini"
             @change="handleChange"
             :placeholder="col1Text"
@@ -87,6 +87,10 @@ export default {
     },
     pushValue: {
       type: Object
+    },
+    isNumber: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -107,6 +111,7 @@ export default {
       this.handleChange();
     },
     handleChange() {
+      console.log("11221");
       this.$emit("input", _.cloneDeep(this.options));
     }
   },

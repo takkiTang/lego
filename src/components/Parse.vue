@@ -41,9 +41,9 @@ export default {
       this.$emit('update:visible',false)
     },
     generateCode() {
-      const tempalte = this.list.map(v => codes[v.type](v.models)).join("\n");
+      const tempalte = this.list.map(v => codes[v.type](v.models,v.list)).join("\n");
       const data = this.list
-        .map(v => (v.models.key ? `'${v.models.key}':undefined` : ""))
+        .map(v => (v.models.key ? `'${v.models.key}':${JSON.stringify(v.keyValue)},` : ""))
         .filter(v => v)
         .join("\n");
       const code = `<template><div>${tempalte}</div></template><script>export default {data() {${data}}}<\/script>`;

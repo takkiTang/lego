@@ -12,6 +12,7 @@
                 col1Text="栅格值"
                 :props="{col1:'span'}"
                 :pushValue="pushValue"
+                :isNumber="true"
               ></optionConfig>
             </el-form-item>
             <el-form-item

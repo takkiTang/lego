@@ -9,7 +9,7 @@ export default [{
     type: 'el-switch',
     models: {
       'active-value': 'flex',
-      'inactive-value': ' '
+      'inactive-value': " "
     }
   },
   {

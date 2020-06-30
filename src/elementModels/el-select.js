@@ -1,4 +1,3 @@
-
 export default [{
         label: '字段标示',
         key: 'key',
