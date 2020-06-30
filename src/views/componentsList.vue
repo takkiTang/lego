@@ -173,7 +173,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import url("http://at.alicdn.com/t/font_1813932_qt6tdjdi0zm.css");
+@import url("https://at.alicdn.com/t/font_1813932_qt6tdjdi0zm.css");
 .list-container {
   .item {
     margin: 10px 0;
